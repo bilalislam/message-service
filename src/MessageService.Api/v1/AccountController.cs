@@ -1,6 +1,9 @@
 ﻿
+using System.Security.Authentication;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 
 namespace MessageService.Api.Controllers
 {
@@ -8,10 +11,13 @@ namespace MessageService.Api.Controllers
     [Route("api/account")]
     public class AccountController : ControllerBase
     {
+        private readonly IMediator _mediator;
+        private readonly ILogger<AccountController> _logger;
 
-        public AccountController()
+        public AccountController(IMediator mediator, ILogger<AccountController> logger)
         {
-
+            _mediator = mediator;
+            _logger = logger;
         }
 
         [Authorize]
@@ -59,9 +65,10 @@ namespace MessageService.Api.Controllers
         /// sync calısması gerekli,gecikme olursa login olamaz.
         /// basarılı veya basarısız loginler activityconsumer'a at
         [HttpPost("sign-in")]
-        public ActionResult SignIn()
+        public async Task<SignInCommandResult> SignInAsync([FromBody] SignInCommand request)
         {
-            return Ok();
+
+            return await _mediator.Send(request);
         }
 
         /// sync calısması lazım

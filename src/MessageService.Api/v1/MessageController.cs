@@ -1,10 +1,9 @@
-﻿
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MessageService.Api.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [ApiController]
     [Route("api/messages")]
     public class MessageController : ControllerBase
@@ -26,6 +25,7 @@ namespace MessageService.Api.Controllers
         [HttpGet("receive")]
         public ActionResult Receive()
         {
+            throw new BusinessException("123", "sadsa");
             return Ok();
         }
 

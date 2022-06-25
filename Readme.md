@@ -11,7 +11,7 @@
 
 - [x] dockerize
 - [x] docker compose
-- [x] structed logging + elasticsearch
+- [ ] structed logging + elasticsearch
 - [ ] global exception handling
 - [ ] fluent command validation
 - [ ] usecases

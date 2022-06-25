@@ -1,3 +1,4 @@
+using MediatR;
 using System.Text;
 using MassTransit;
 using MessageService.Api;
@@ -5,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
+using Serilog.Formatting.Elasticsearch;
 using Serilog.Sinks.SystemConsole.Themes;
 
 var loggerConfiguration = new LoggerConfiguration();
@@ -23,7 +25,13 @@ Log.Logger = loggerConfiguration
 var builder = WebApplication.CreateBuilder(args);
 ConfigurationManager configuration = builder.Configuration;
 
-builder.Logging.AddSerilog(Log.Logger);
+
+builder.Logging.ClearProviders();
+builder.Host.UseSerilog(Log.Logger);
+//builder.Logging.AddSerilog(Log.Logger);
+
+
+builder.Services.AddMediatR(typeof(Program).Assembly);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddHttpContextAccessor();
@@ -78,7 +86,15 @@ builder.Services.AddMassTransit(x =>
     x.AddConsumer<ActivityConsumer>();
     x.AddConsumer<BlockUserConsumer>();
 
-    x.UsingRabbitMq((context, cfg) => { cfg.ConfigureEndpoints(context); });
+    x.UsingRabbitMq((context, cfg) =>
+    {
+        cfg.Host(configuration["RabbitmqSettings:Host"], Convert.ToUInt16(configuration["RabbitmqSettings:Port"]), "/", h =>
+                    {
+                        h.Username(configuration["RabbitmqSettings:Username"]);
+                        h.Password(configuration["RabbitmqSettings:Password"]);
+                    });
+        cfg.ConfigureEndpoints(context);
+    });
 
     x.AddRequestClient<Message>(new Uri($"queue:{KebabCaseEndpointNameFormatter.Instance.Consumer<MessageConsumer>()}"));
     x.AddRequestClient<Activity>(new Uri($"queue:{KebabCaseEndpointNameFormatter.Instance.Consumer<ActivityConsumer>()}"));
@@ -100,5 +116,6 @@ if (app.Environment.IsDevelopment())
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseMiddleware<JwtMiddleware>();
+app.UseMiddleware<ErrorHandlerMiddleware>();
 app.MapControllers();
 app.Run();

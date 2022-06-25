@@ -1,6 +1,8 @@
 using System.IdentityModel.Tokens.Jwt;
+using System.Net;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 
 namespace MessageService.Api
 {
@@ -21,6 +23,7 @@ namespace MessageService.Api
 
             if (token != null)
                 attachUserToContext(context, token);
+
 
             await _next(context);
         }
