@@ -32,3 +32,7 @@
 ```sh
  dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=lcov /p:CoverletOutput=./lcov tests/MessageService.UnitTests/MessageService.UnitTests.csproj
 ```
+
+```sh
+ dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=lcov /p:CoverletOutput=./lcov tests/MessageService.FunctionalTests/MessageService.FunctionalTests.csproj
+```
