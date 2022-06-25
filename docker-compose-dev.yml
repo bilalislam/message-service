@@ -1,0 +1,10 @@
+version: "3.3"
+services:
+  tnmonapi:
+    build:
+      context: .
+      dockerfile: ./tools/docker/Dockerfile
+    ports:
+      - "8002:80"
+    environment:
+      - DOTNET_ENVIRONMENT=Development
