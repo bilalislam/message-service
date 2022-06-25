@@ -1,10 +1,40 @@
 version: "3.3"
+
+networks:
+  messagingservice:
+
+messageservice:
+  build:
+    context: .
+    dockerfile: ./tools/docker/Dockerfile
+  networks:
+    - messagingservice
+  ports:
+    - "8002:80"
+  environment:
+    - DOTNET_ENVIRONMENT=Development
+
 services:
-  tnmonapi:
-    build:
-      context: .
-      dockerfile: ./tools/docker/Dockerfile
+  rabbitmq:
+    image: masstransit/rabbitmq:latest
+    networks:
+      - netmon
     ports:
-      - "8002:80"
-    environment:
-      - DOTNET_ENVIRONMENT=Development
+      - "5672:5672"
+      - "15672:15672"
+      - "15692:15692"
+    healthcheck:
+      timeout: 5s
+      interval: 5s
+      retries: 10
+      test:
+        - "CMD"
+        - "rabbitmqctl"
+        - "status"
+
+  mongo:
+    image: "mongo"
+    networks:
+      - messagingservice
+    ports:
+      - '27017-27019:27017-27019'

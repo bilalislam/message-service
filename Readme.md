@@ -9,21 +9,22 @@
 
 ## TODO 
 
-- [ ] dockerize
-- [ ] docker compose
-- [ ] structed logging + elasticsearch
+- [*] dockerize
+- [*] docker compose
+- [*] structed logging + elasticsearch
+- [ ] global exception handling
+- [ ] fluent command validation
 - [ ] usecases
 - [ ] unit tests
 - [ ] functional tests
-- [ ] fluent command validation
-- [ ] rest
+- [*] rest
 - [ ] mediatR
-- [ ] clean architecture
-- [ ] mongo
+- [*] clean architecture
+- [*] mongo
 - [ ] mongo add constraint for blockeduser
-- [ ] masstransit
+- [*] masstransit
 - [ ] masstransit unit tests
-- [ ] rabbitmq
+- [*] rabbitmq
 - [ ] tech stack olarak awesome readme koy (masstransit,rabbitmq,mongo,dotnet6.0)
 
 
