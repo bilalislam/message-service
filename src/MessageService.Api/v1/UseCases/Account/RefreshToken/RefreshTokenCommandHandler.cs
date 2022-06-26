@@ -16,7 +16,7 @@ public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, R
     public async Task<RefreshTokenCommandResult> Handle(RefreshTokenCommand request,
         CancellationToken cancellationToken)
     {
-        var user = await _userRepository.GetAsync(request.Email, cancellationToken);
+        var user = await _userRepository.GetByEmailAsync(request.Email, cancellationToken);
         if (user != null && user.Token.RefreshToken == request.RefreshToken &&
             user.Token.RefreshTokenExpiration.ToLocalTime() > DateTime.Now)
         {

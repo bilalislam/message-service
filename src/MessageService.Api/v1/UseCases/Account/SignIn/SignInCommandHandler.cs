@@ -22,7 +22,7 @@ public class SignInCommandHandler : IRequestHandler<SignInCommand, SignInCommand
 
     public async Task<SignInCommandResult> Handle(SignInCommand request, CancellationToken cancellationToken)
     {
-        var user = await _repository.GetAsync(request.Email, cancellationToken);
+        var user = await _repository.GetByEmailAsync(request.Email, cancellationToken);
         if (user != null)
         {
             if (user.Password == request.Password)

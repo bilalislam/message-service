@@ -15,7 +15,7 @@ public class SignUpCommandHandler : IRequestHandler<SignUpCommand, SignUpCommand
     public async Task<SignUpCommandResult> Handle(SignUpCommand request, CancellationToken cancellationToken)
     {
         var user = User.Load(request);
-        var getUserByEmail = await _userRepository.GetAsync(user.Email, cancellationToken);
+        var getUserByEmail = await _userRepository.GetByEmailAsync(user.Email, cancellationToken);
         if (getUserByEmail != null)
         {
             return new SignUpCommandResult()

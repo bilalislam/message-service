@@ -12,4 +12,5 @@ public static class DomainErrorCodes
     public const string EDService1005 = "User password could not be empty";
     public const string EDService1006 = "User surname could not be empty";
     public const string EDService1007 = "From and to could not be same";
+    public const string EDService1008 = "User does not exists";
 }

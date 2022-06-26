@@ -28,7 +28,7 @@ public class GetUsersCommandHandler : IRequestHandler<GetUsersCommand, GetUsersC
         return new GetUsersCommandResult()
         {
             Success = true,
-            Users = getUsers.Select(x => new UserDto() { Name = x.Name }).ToList(),
+            Users = getUsers.Select(x => new UserDto() { Name = x.Name, Email = x.Email }).ToList(),
             ReturnPath = "/users",
             ValidateState = ValidationState.Valid
         };

@@ -6,16 +6,20 @@ public class UserRepository : IUserRepository
 {
     private readonly IMongoDBContext _context;
     private readonly IMongoCollection<User> _collection;
-
-
+    
     public UserRepository(IMongoDBContext context)
     {
         _context = context;
         _collection = _context.GetCollection<User>("users");
     }
 
-
-    public async Task<User> GetAsync(string email, CancellationToken cancellationToken)
+    public async Task<User> GetByEmailAndNameAsync(string email,string name, CancellationToken cancellationToken)
+    {
+        var user = await _collection.FindAsync(op => op.Email == email && op.Name == name, cancellationToken: cancellationToken);
+        return user.FirstOrDefault();
+    }
+    
+    public async Task<User> GetByEmailAsync(string email, CancellationToken cancellationToken)
     {
         var user = await _collection.FindAsync(op => op.Email == email, cancellationToken: cancellationToken);
         return user.FirstOrDefault();
@@ -34,7 +38,7 @@ public class UserRepository : IUserRepository
 
     public async Task<List<User>> ListAsync(CancellationToken cancellationToken)
     {
-       return await Task.Run(() =>
+        return await Task.Run(() =>
         {
             var users = _collection.AsQueryable().ToList();
             return users;
