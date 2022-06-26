@@ -89,7 +89,7 @@ namespace MessageService.Api
                 Instance = $"urn:messagingservice:{statusCode}:{context.TraceIdentifier}",
                 Messages = new List<MessageContractDto>
                 {
-                    new MessageContractDto
+                    new()
                     {
                         Code = errorCode,
                         Content =  exception is BusinessException || exception is ValidationException ? message : string.Empty,

@@ -1,5 +1,6 @@
 using MediatR;
 using System.Text;
+using System.Text.Json.Serialization;
 using MassTransit;
 using MessageService.Api;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -19,23 +20,22 @@ Log.Logger = loggerConfiguration
     .Enrich.WithProcessName()
     .Enrich.WithThreadId()
     .Enrich.WithThreadName()
-    .WriteTo.Console(theme: SystemConsoleTheme.Literate)
+    //.WriteTo.Console(theme: SystemConsoleTheme.Literate)
+    .WriteTo.Async(c => c.Console(new ElasticsearchJsonFormatter()))
     .CreateLogger();
 
 var builder = WebApplication.CreateBuilder(args);
 ConfigurationManager configuration = builder.Configuration;
 
-
 builder.Logging.ClearProviders();
 builder.Host.UseSerilog(Log.Logger);
-//builder.Logging.AddSerilog(Log.Logger);
-
+builder.Logging.AddSerilog(Log.Logger);
 
 builder.Services.AddMediatR(typeof(Program).Assembly);
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options => { options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()); });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddHttpContextAccessor();
-
 builder.Services.AddSwaggerGen(opt =>
 {
     opt.SwaggerDoc("v1", new OpenApiInfo { Title = "Message Api", Version = "v1" });
@@ -49,36 +49,35 @@ builder.Services.AddSwaggerGen(opt =>
         Scheme = "bearer"
     });
     opt.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
                 {
-                    {
-                        new OpenApiSecurityScheme
-                        {
-                            Reference = new OpenApiReference
-                            {
-                                Type = ReferenceType.SecurityScheme,
-                                Id = "Bearer"
-                            }
-                        },
-                        new string[] { }
-                    }
-                });
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] { }
+        }
+    });
 });
-
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-.AddJwtBearer(option =>
-             {
-                 option.TokenValidationParameters = new TokenValidationParameters
-                 {
-                     ValidateAudience = true,
-                     ValidateIssuer = true,
-                     ValidateLifetime = true,
-                     ValidateIssuerSigningKey = true,
-                     ValidIssuer = configuration["Token:Issuer"],
-                     ValidAudience = configuration["Token:Audience"],
-                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Token:SecurityKey"])),
-                     ClockSkew = TimeSpan.Zero
-                 };
-             });
+    .AddJwtBearer(option =>
+    {
+        option.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateAudience = true,
+            ValidateIssuer = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = configuration["Token:Issuer"],
+            ValidAudience = configuration["Token:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Token:SecurityKey"])),
+            ClockSkew = TimeSpan.Zero
+        };
+    });
 builder.Services.AddMassTransit(x =>
 {
     x.SetKebabCaseEndpointNameFormatter();
@@ -88,30 +87,30 @@ builder.Services.AddMassTransit(x =>
 
     x.UsingRabbitMq((context, cfg) =>
     {
-        cfg.Host(configuration["RabbitmqSettings:Host"], Convert.ToUInt16(configuration["RabbitmqSettings:Port"]), "/", h =>
-                    {
-                        h.Username(configuration["RabbitmqSettings:Username"]);
-                        h.Password(configuration["RabbitmqSettings:Password"]);
-                    });
+        cfg.Host(configuration["RabbitmqSettings:Host"], Convert.ToUInt16(configuration["RabbitmqSettings:Port"]), "/",
+            h =>
+            {
+                h.Username(configuration["RabbitmqSettings:Username"]);
+                h.Password(configuration["RabbitmqSettings:Password"]);
+            });
         cfg.ConfigureEndpoints(context);
     });
 
-    x.AddRequestClient<Message>(new Uri($"queue:{KebabCaseEndpointNameFormatter.Instance.Consumer<MessageConsumer>()}"));
-    x.AddRequestClient<Activity>(new Uri($"queue:{KebabCaseEndpointNameFormatter.Instance.Consumer<ActivityConsumer>()}"));
-    x.AddRequestClient<BlockUser>(new Uri($"queue:{KebabCaseEndpointNameFormatter.Instance.Consumer<BlockUserConsumer>()}"));
+    x.AddRequestClient<Message>(
+        new Uri($"queue:{KebabCaseEndpointNameFormatter.Instance.Consumer<MessageConsumer>()}"));
+    x.AddRequestClient<Activity>(
+        new Uri($"queue:{KebabCaseEndpointNameFormatter.Instance.Consumer<ActivityConsumer>()}"));
+    x.AddRequestClient<BlockUser>(
+        new Uri($"queue:{KebabCaseEndpointNameFormatter.Instance.Consumer<BlockUserConsumer>()}"));
 });
-
 builder.Services.AddInfrastructure();
-
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
 
 app.UseAuthentication();
 app.UseAuthorization();

@@ -1,5 +1,4 @@
-﻿
-using System.Security.Authentication;
+﻿using System.Security.Authentication;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -31,7 +30,6 @@ namespace MessageService.Api.Controllers
         [HttpGet("activities")]
         public ActionResult GetActivities()
         {
-
             return Ok();
         }
 
@@ -41,9 +39,7 @@ namespace MessageService.Api.Controllers
         [HttpPost("block-user")]
         public ActionResult BlockUser()
         {
-
             return Ok();
-
         }
 
         [Authorize]
@@ -53,13 +49,10 @@ namespace MessageService.Api.Controllers
             return Ok();
         }
 
-
-        ///todo : create user consumer
         [HttpPost("sign-up")]
-        public ActionResult SignUp()
+        public async Task<SignUpCommandResult> SignUp([FromBody] SignUpCommand request)
         {
-
-            return Ok();
+            return await _mediator.Send(request);
         }
 
         /// sync calısması gerekli,gecikme olursa login olamaz.
@@ -67,7 +60,6 @@ namespace MessageService.Api.Controllers
         [HttpPost("sign-in")]
         public async Task<SignInCommandResult> SignInAsync([FromBody] SignInCommand request)
         {
-
             return await _mediator.Send(request);
         }
 
