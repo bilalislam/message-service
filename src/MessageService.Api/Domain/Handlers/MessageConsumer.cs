@@ -6,19 +6,30 @@ namespace MessageService.Api
         IConsumer<Message>
     {
         readonly ILogger<MessageConsumer> _logger;
-        private readonly IMongoDBContext _mongoClient;
         private readonly IMessageRepository _messageRepository;
+        private readonly IBlockedUserRepository _blockedUserRepository;
 
-        public MessageConsumer(ILogger<MessageConsumer> logger, IMessageRepository messageRepository)
+        public MessageConsumer(ILogger<MessageConsumer> logger, IMessageRepository messageRepository,
+            IBlockedUserRepository blockedUserRepository)
         {
             _logger = logger;
             _messageRepository = messageRepository;
+            _blockedUserRepository = blockedUserRepository;
         }
 
         public async Task Consume(ConsumeContext<Message> context)
         {
-            await _messageRepository.AddAsync(context.Message);
-            _logger.LogInformation($"Message received from : {context.Message.From} to : {context.Message.To}");
+            var getBlockedUser = await _blockedUserRepository.GetAsync(context.Message.To, context.Message.From);
+            if (getBlockedUser == null)
+            {
+                await _messageRepository.AddAsync(context.Message);
+                _logger.LogInformation($"Message received from : {context.Message.From} to : {context.Message.To}");
+            }
+            else
+            {
+                _logger.LogInformation(
+                    $"Message can not sent that's already {context.Message.From} blocked : {context.Message.To}");
+            }
         }
     }
 }

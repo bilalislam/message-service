@@ -38,11 +38,15 @@ namespace MessageService.Api.Controllers
 
         [Authorize]
         [HttpPost("block-user")]
-        public async Task<BlockUserCommandResult> BlockUser([FromQuery] BlockUserCommand request)
+        public async Task<BlockUserCommandResult> BlockUser([FromBody] BlockUserContract request)
         {
             var currentUser = _httpContextAccessor.HttpContext?.Items["User"]?.ToString();
-            request.CurrentUser = currentUser;
-            return await _mediator.Send(request);
+            return await _mediator.Send(new BlockUserCommand()
+            {
+                BlockedUser = request.BlockedUser,
+                BlockedUserEmail = request.BlockedUserEmail,
+                CurrentUser = currentUser
+            });
         }
 
         [HttpPost("sign-up")]

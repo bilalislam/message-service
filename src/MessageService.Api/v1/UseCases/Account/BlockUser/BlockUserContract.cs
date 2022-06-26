@@ -1,10 +1,7 @@
-using MediatR;
-
 namespace MessageService.Api;
 
-public class BlockUserCommand : IRequest<BlockUserCommandResult>
+public class BlockUserContract
 {
-    public string CurrentUser { get; set; }
     public string BlockedUser { get; set; }
     public string BlockedUserEmail { get; set; }
 }

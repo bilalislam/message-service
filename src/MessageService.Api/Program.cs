@@ -8,7 +8,6 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using Serilog.Formatting.Elasticsearch;
-using Serilog.Sinks.SystemConsole.Themes;
 
 var loggerConfiguration = new LoggerConfiguration();
 Log.Logger = loggerConfiguration
