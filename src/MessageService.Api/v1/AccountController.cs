@@ -36,17 +36,20 @@ namespace MessageService.Api.Controllers
             });
         }
 
-        //blocked user consumer ve blocked users tablosu ac rediste
-        // validate user,olan bir user'ı block edebilir
         [Authorize]
         [HttpPost("block-user")]
-        public ActionResult BlockUser()
+        public async Task<BlockUserCommandResult> BlockUser([FromQuery] string to)
         {
-            return Ok();
+            var currentUser = _httpContextAccessor.HttpContext?.Items["User"]?.ToString();
+            return await _mediator.Send(new BlockUserCommand()
+            {
+                CurrentUser = currentUser,
+                BlockedUser = to,
+            });
         }
 
         [Authorize]
-        [HttpPut("unblock-user")]
+        [HttpDelete("unblock-user")]
         public ActionResult UnBlockUser()
         {
             return Ok();
@@ -58,13 +61,13 @@ namespace MessageService.Api.Controllers
             return await _mediator.Send(request);
         }
 
-        [HttpPost("sign-in")]
+        [HttpPut("sign-in")]
         public async Task<SignInCommandResult> SignInAsync([FromBody] SignInCommand request)
         {
             return await _mediator.Send(request);
         }
 
-        [HttpPost("refresh-token")]
+        [HttpPut("refresh-token")]
         public async Task<RefreshTokenCommandResult> RefreshToken([FromBody] RefreshTokenCommand request)
         {
             return await _mediator.Send(request);
