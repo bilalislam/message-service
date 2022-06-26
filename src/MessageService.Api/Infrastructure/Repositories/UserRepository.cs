@@ -31,4 +31,13 @@ public class UserRepository : IUserRepository
         await _collection.ReplaceOneAsync(n => n.Id.Equals(user.Id), user, new ReplaceOptions() { IsUpsert = false },
             cancellationToken);
     }
+
+    public async Task<List<User>> ListAsync(CancellationToken cancellationToken)
+    {
+       return await Task.Run(() =>
+        {
+            var users = _collection.AsQueryable().ToList();
+            return users;
+        }, cancellationToken);
+    }
 }

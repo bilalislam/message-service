@@ -1,5 +1,6 @@
 ﻿using System.Security.Authentication;
 using MediatR;
+using MessageService.Api.Controllers.UseCases.Account.GetUsers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
@@ -11,19 +12,17 @@ namespace MessageService.Api.Controllers
     public class AccountController : ControllerBase
     {
         private readonly IMediator _mediator;
-        private readonly ILogger<AccountController> _logger;
 
-        public AccountController(IMediator mediator, ILogger<AccountController> logger)
+        public AccountController(IMediator mediator)
         {
             _mediator = mediator;
-            _logger = logger;
         }
 
         [Authorize]
         [HttpGet("users")]
-        public ActionResult GetUsers()
+        public Task<GetUsersCommandResult> GetUsers()
         {
-            return Ok();
+            return _mediator.Send(new GetUsersCommand());
         }
 
         [Authorize]
