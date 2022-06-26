@@ -12,13 +12,13 @@
 - [x] dockerize
 - [x] docker compose
 - [x] structed logging + elasticsearch
-- [ ] global exception handling
-- [ ] fluent command validation
+- [x] global exception handling
+- [ ] command validation
 - [ ] usecases
 - [ ] unit tests
 - [ ] functional tests
 - [x] rest
-- [ ] mediatR
+- [x] mediatR
 - [x] clean architecture
 - [x] mongo
 - [ ] mongo add constraint for blockeduser
