@@ -50,24 +50,21 @@ namespace MessageService.Api.Controllers
         }
 
         [HttpPost("sign-up")]
-        public async Task<SignUpCommandResult> SignUp([FromBody] SignUpCommand request)
+        public async Task<SignUpCommandResult> SignUpAsync([FromBody] SignUpCommand request)
         {
             return await _mediator.Send(request);
         }
 
-        /// sync calısması gerekli,gecikme olursa login olamaz.
-        /// basarılı veya basarısız loginler activityconsumer'a at
         [HttpPost("sign-in")]
         public async Task<SignInCommandResult> SignInAsync([FromBody] SignInCommand request)
         {
             return await _mediator.Send(request);
         }
 
-        /// sync calısması lazım
-        [HttpGet("refresh-token")]
-        public ActionResult RefreshToken()
+        [HttpPost("refresh-token")]
+        public async Task<RefreshTokenCommandResult> RefreshToken([FromBody] RefreshTokenCommand request)
         {
-            return Ok();
+            return await _mediator.Send(request);
         }
     }
 }

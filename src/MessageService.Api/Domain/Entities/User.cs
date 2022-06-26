@@ -54,10 +54,5 @@ namespace MessageService.Api
             Token = tokenProxy.CreateAccessToken(this);
             return this;
         }
-
-        public User RefreshToken()
-        {
-            return this;
-        }
     }
 }

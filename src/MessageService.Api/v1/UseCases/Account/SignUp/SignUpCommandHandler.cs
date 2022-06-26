@@ -11,13 +11,7 @@ public class SignUpCommandHandler : IRequestHandler<SignUpCommand, SignUpCommand
     {
         _userRepository = userRepository;
     }
-
-    /// <summary>
-    /// todo: add into validateservice
-    /// </summary>
-    /// <param name="request"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
+    
     public async Task<SignUpCommandResult> Handle(SignUpCommand request, CancellationToken cancellationToken)
     {
         var user = User.Load(request);
@@ -40,8 +34,9 @@ public class SignUpCommandHandler : IRequestHandler<SignUpCommand, SignUpCommand
                 ReturnPath = "/sign-up"
             };
         }
+
         await _userRepository.AddAsync(user, cancellationToken);
-        
+
         return new SignUpCommandResult()
         {
             Success = true,
