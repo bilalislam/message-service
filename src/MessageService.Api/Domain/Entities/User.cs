@@ -41,15 +41,17 @@ namespace MessageService.Api
                 nameof(DomainErrorCodes.EDService1005), DomainErrorCodes.EDService1005,
                 DomainErrorCodes.EDService1005);
 
-            Guard.That<ValidationException>(string.IsNullOrEmpty(command.Surname), nameof(DomainErrorCodes.EDService1006),
+            Guard.That<ValidationException>(string.IsNullOrEmpty(command.Surname),
+                nameof(DomainErrorCodes.EDService1006),
                 DomainErrorCodes.EDService1006,
                 DomainErrorCodes.EDService1006);
 
             return new User(command.Email, command.Name, command.Surname, command.Password);
         }
 
-        public User CreateToken()
+        public User CreateToken(ITokenProxy tokenProxy)
         {
+            Token = tokenProxy.CreateAccessToken(this);
             return this;
         }
 

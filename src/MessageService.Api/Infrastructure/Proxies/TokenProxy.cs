@@ -6,9 +6,11 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace MessageService.Api
 {
+    [ExcludeFromDescription]
     public class TokenProxy : ITokenProxy
     {
         IConfiguration Configuration { get; set; }
+
         public TokenProxy(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -16,7 +18,8 @@ namespace MessageService.Api
 
         public Token CreateAccessToken(User user)
         {
-            SymmetricSecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Token:SecurityKey"]));
+            SymmetricSecurityKey securityKey =
+                new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Token:SecurityKey"]));
             SigningCredentials signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
             JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
 
@@ -29,12 +32,13 @@ namespace MessageService.Api
             {
                 Issuer = Configuration["Token:Issuer"],
                 Audience = Configuration["Token:Audience"],
-                Subject = new ClaimsIdentity(new[] {
-                        new Claim("id", user.Id.ToString()),
-                        new Claim("name", user.Name.ToString()),
-                        new Claim("email", user.Email.ToString()),
-                        new Claim("surname", user.Surname.ToString())
-                    }),
+                Subject = new ClaimsIdentity(new[]
+                {
+                    new Claim("id", user.Id.ToString()),
+                    new Claim("name", user.Name.ToString()),
+                    new Claim("email", user.Email.ToString()),
+                    new Claim("surname", user.Surname.ToString())
+                }),
                 Expires = tokenInstance.Expiration,
                 NotBefore = DateTime.Now,
                 SigningCredentials = signingCredentials,
@@ -43,6 +47,7 @@ namespace MessageService.Api
             var token = tokenHandler.CreateToken(tokenDescriptor);
             tokenInstance.AccessToken = tokenHandler.WriteToken(token);
             tokenInstance.RefreshToken = CreateRefreshToken();
+            tokenInstance.RefreshTokenExpiration = tokenInstance.Expiration.AddMinutes(5);
 
             return tokenInstance;
         }
