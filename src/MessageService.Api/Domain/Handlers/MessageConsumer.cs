@@ -17,12 +17,17 @@ namespace MessageService.Api
             _blockedUserRepository = blockedUserRepository;
         }
 
+        /// <summary>
+        /// BlockedUser From is context to
+        /// BlockedUser To is context from
+        /// </summary>
+        /// <param name="context"></param>
         public async Task Consume(ConsumeContext<Message> context)
         {
             var getBlockedUser = await _blockedUserRepository.GetAsync(context.Message.To, context.Message.From);
             if (getBlockedUser == null)
             {
-                await _messageRepository.AddAsync(context.Message);
+                await _messageRepository.AddAsync(context.Message, CancellationToken.None);
                 _logger.LogInformation($"Message received from : {context.Message.From} to : {context.Message.To}");
             }
             else

@@ -32,17 +32,25 @@ namespace MessageService.Api.Controllers
         }
 
 
-        [HttpGet("receive")]
-        public ActionResult Receive()
+        [HttpGet]
+        public async Task<GetMessageUsersCommandResult> Messages()
         {
-            throw new BusinessException("123", "sadsa");
-            return Ok();
+            var currentUser = _httpContextAccessor.HttpContext?.Items["User"]?.ToString();
+            return await _mediator.Send(new GetMessageUsersCommand()
+            {
+                CurrentUser = currentUser
+            });
         }
 
-        [HttpGet("histories")]
-        public ActionResult GetHistory()
+        [HttpGet("{name}/histories")]
+        public async Task<GetHistoriesCommandResult> GetHistories([FromRoute] string name)
         {
-            return Ok();
+            var currentUser = _httpContextAccessor.HttpContext?.Items["User"]?.ToString();
+            return await _mediator.Send(new GetHistoriesCommand()
+            {
+                CurrentUser = currentUser,
+                ReceiverUser = name
+            });
         }
     }
 }

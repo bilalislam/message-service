@@ -13,7 +13,7 @@
 - [x] docker compose
 - [x] structed logging + elasticsearch
 - [x] global exception handling
-- [ ] command validation
+- [x] command validation
 - [ ] usecases
 - [ ] unit tests
 - [ ] functional tests
