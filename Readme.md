@@ -14,7 +14,8 @@
 - [x] structed logging + elasticsearch
 - [x] global exception handling
 - [x] command validation
-- [ ] usecases
+- [x] usecases
+- [ ] entity id generator
 - [ ] unit tests
 - [ ] functional tests
 - [x] rest

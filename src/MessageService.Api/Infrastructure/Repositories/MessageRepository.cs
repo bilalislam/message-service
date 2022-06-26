@@ -18,18 +18,18 @@ namespace MessageService.Api
             await _collection.InsertOneAsync(message, cancellationToken);
         }
 
-        public Task<List<string>> GetUsersAsync(string from, CancellationToken cancellationToken)
+        public async Task<List<Message>> GetUsersAsync(string from, CancellationToken cancellationToken)
         {
-            // var users = _collection.Aggregate()
-            //     .Match(new BsonDocument() { { "From", from } })
-            //     .Group(new BsonDocument { { "_id", "$To" } })
-            //     .Project<string>(new BsonDocument()
-            //     {
-            //         { "_id", "$To" }
-            //     }).ToList();
-            //
-            // return users;
-            return null;
+            return await Task.Run(() =>
+            {
+                return _collection.AsQueryable()
+                    .Where(p => p.From == from)
+                    .Select(x => new Message(x.Id, x.From, x.To, x.Msg, x.EventOn))
+                    .GroupBy(p => p.To)
+                    .ToList()
+                    .Select(p => Message.SetTo(p.Key))
+                    .ToList();
+            });
         }
 
         public async Task<List<Message>> GetHistoriesAsync(string from, string to, CancellationToken cancellationToken)

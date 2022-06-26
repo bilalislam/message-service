@@ -19,7 +19,10 @@ public class GetMessageUsersCommandHandler : IRequestHandler<GetMessageUsersComm
         {
             Success = true,
             ReturnPath = "/messages",
-            //Users = getMessageUsers.Select(x => x.To).ToList(),
+            Users = getMessageUsers.Select(x => new MessageUserDto()
+            {
+                Name = x.To
+            }).ToList(),
             ValidateState = ValidationState.Valid
         };
     }

@@ -9,12 +9,19 @@ namespace MessageService.Api
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; private set; }
-
         public string From { get; private set; }
         public string To { get; private set; }
         public string Msg { get; private set; }
         public DateTime EventOn { get; private set; }
 
+        /// <summary>
+        /// impedance mismatch !
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <param name="msg"></param>
+        /// <param name="eventOn"></param>
         public Message(string id, string from, string to, string msg, DateTime eventOn)
         {
             Id = id;
@@ -22,6 +29,16 @@ namespace MessageService.Api
             To = to;
             Msg = msg;
             EventOn = eventOn;
+        }
+
+        public static Message SetTo(string to)
+        {
+            return new Message(to);
+        }
+
+        private Message(string to)
+        {
+            To = to;
         }
 
         private Message(string from, string to, string msg)
@@ -58,7 +75,7 @@ namespace MessageService.Api
                 nameof(DomainErrorCodes.EDService1003),
                 DomainErrorCodes.EDService1003,
                 DomainErrorCodes.EDService1003);
-            
+
             Guard.That<ValidationException>(string.IsNullOrEmpty(command.Message),
                 nameof(DomainErrorCodes.EDService1003),
                 DomainErrorCodes.EDService1003,

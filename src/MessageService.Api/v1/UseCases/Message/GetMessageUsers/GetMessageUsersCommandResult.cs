@@ -4,5 +4,5 @@ namespace MessageService.Api;
 
 public class GetMessageUsersCommandResult : CommandResultBase
 {
-    public List<string> Users { get; set; }
+    public List<MessageUserDto> Users { get; set; }
 }
