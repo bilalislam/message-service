@@ -1,9 +1,7 @@
-﻿using System.Security.Authentication;
-using MediatR;
+﻿using MediatR;
 using MessageService.Api.Controllers.UseCases.Account.GetUsers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Serilog;
 
 namespace MessageService.Api.Controllers
 {
@@ -12,24 +10,30 @@ namespace MessageService.Api.Controllers
     public class AccountController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public AccountController(IMediator mediator)
+        public AccountController(IMediator mediator, IHttpContextAccessor httpContextAccessor)
         {
             _mediator = mediator;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         [Authorize]
         [HttpGet("users")]
-        public Task<GetUsersCommandResult> GetUsers()
+        public async Task<GetUsersCommandResult> GetUsers()
         {
-            return _mediator.Send(new GetUsersCommand());
+            return await _mediator.Send(new GetUsersCommand());
         }
 
         [Authorize]
         [HttpGet("activities")]
-        public ActionResult GetActivities()
+        public async Task<GetActivitiesCommandResult> GetActivities()
         {
-            return Ok();
+            var currentUserEmail = _httpContextAccessor.HttpContext?.Items["Email"]?.ToString();
+            return await _mediator.Send(new GetActivitiesCommand()
+            {
+                Email = currentUserEmail
+            });
         }
 
         //blocked user consumer ve blocked users tablosu ac rediste

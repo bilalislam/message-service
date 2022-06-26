@@ -30,7 +30,6 @@ namespace MessageService.Api
 
         private void attachUserToContext(HttpContext context, string token)
         {
-
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_configuration["Token:SecurityKey"]);
             tokenHandler.ValidateToken(token, new TokenValidationParameters
@@ -44,9 +43,11 @@ namespace MessageService.Api
 
             var jwtToken = (JwtSecurityToken)validatedToken;
             string userName = jwtToken.Claims.First(x => x.Type == "name").Value;
+            string email = jwtToken.Claims.First(x => x.Type == "email").Value;
 
             // attach username to context on successful jwt validation
             context.Items["User"] = userName;
+            context.Items["Email"] = email;
         }
     }
 }

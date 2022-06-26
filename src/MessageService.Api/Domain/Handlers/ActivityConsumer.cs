@@ -15,8 +15,8 @@ namespace MessageService.Api
 
         public async Task Consume(ConsumeContext<Activity> context)
         {
-            await _activityRepository.AddAsync(context.Message);
-            _logger.LogInformation($"Activity log received from : {context.Message.User} to : {context.Message.Event}");
+            await _activityRepository.AddAsync(context.Message, CancellationToken.None);
+            _logger.LogInformation($"Activity log received from : {context.Message.Email} to : {context.Message.Event}");
         }
     }
 }

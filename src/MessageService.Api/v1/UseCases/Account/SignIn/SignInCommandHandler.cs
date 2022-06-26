@@ -29,7 +29,7 @@ public class SignInCommandHandler : IRequestHandler<SignInCommand, SignInCommand
             {
                 user.CreateToken(_tokenProxy);
                 await _repository.UpdateAsync(user, cancellationToken);
-                await CreateActivityLog(user.Name, "login is success");
+                await CreateActivityLog(user.Email, "login is success");
                 
                 return new SignInCommandResult()
                 {
@@ -41,7 +41,7 @@ public class SignInCommandHandler : IRequestHandler<SignInCommand, SignInCommand
             }
             else
             {
-                await CreateActivityLog(user.Name, "login is failure");
+                await CreateActivityLog(user.Email, "login is failure");
                 return new SignInCommandResult()
                 {
                     Success = false,
@@ -61,15 +61,15 @@ public class SignInCommandHandler : IRequestHandler<SignInCommand, SignInCommand
         }
     }
 
-    private async Task CreateActivityLog(string userName, string message)
+    private async Task CreateActivityLog(string email, string message)
     {
         var endpoint = await _sendEndpointProvider.GetSendEndpoint(new Uri("queue:activity"));
         await endpoint.Send<Activity>(new
         {
             Id = ObjectId.GenerateNewId(),
-            User = userName,
+            Email = email,
             Event = message,
-            EventOn = DateTime.Now.ToString(CultureInfo.InvariantCulture)
+            EventOn = DateTime.Now
         });
     }
 }
