@@ -9,6 +9,14 @@ public class FakeDataGenerator
     private static Faker _faker = new Faker();
 
 
+    public static GetActivitiesCommand CreateActivitiesCommand()
+    {
+        return new GetActivitiesCommand()
+        {
+            Email = _faker.Random.String()
+        };
+    }
+    
     public static RefreshTokenCommand CreateRefreshTokenCommand()
     {
         return new RefreshTokenCommand()
