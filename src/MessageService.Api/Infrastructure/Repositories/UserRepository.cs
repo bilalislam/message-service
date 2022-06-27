@@ -1,7 +1,9 @@
+using System.Diagnostics.CodeAnalysis;
 using MongoDB.Driver;
 
 namespace MessageService.Api;
 
+[ExcludeFromCodeCoverage]
 public class UserRepository : IUserRepository
 {
     private readonly IMongoDBContext _context;

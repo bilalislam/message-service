@@ -1,9 +1,11 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Security.Authentication;
 using Newtonsoft.Json;
 
 namespace MessageService.Api
 {
+    [ExcludeFromCodeCoverage]
     public class ErrorHandlerMiddleware
     {
         private readonly RequestDelegate _next;

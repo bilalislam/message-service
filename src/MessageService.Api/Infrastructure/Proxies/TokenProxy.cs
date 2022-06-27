@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -6,7 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace MessageService.Api
 {
-    [ExcludeFromDescription]
+    [ExcludeFromCodeCoverage]
     public class TokenProxy : ITokenProxy
     {
         IConfiguration Configuration { get; set; }

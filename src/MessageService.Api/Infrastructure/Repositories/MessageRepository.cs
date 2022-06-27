@@ -1,7 +1,9 @@
+using System.Diagnostics.CodeAnalysis;
 using MongoDB.Driver;
 
 namespace MessageService.Api
 {
+    [ExcludeFromCodeCoverage]
     public class MessageRepository : IMessageRepository
     {
         private readonly IMongoDBContext _context;
@@ -18,7 +20,7 @@ namespace MessageService.Api
             await _collection.InsertOneAsync(message, cancellationToken);
         }
 
-        public async Task<List<Message>> GetUsersAsync(string from, CancellationToken cancellationToken)
+        public async Task<List<Message>> GetMessagedUsersAsync(string from, CancellationToken cancellationToken)
         {
             return await Task.Run(() =>
             {

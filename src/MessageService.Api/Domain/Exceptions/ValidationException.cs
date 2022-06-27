@@ -1,5 +1,8 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace MessageService.Api
 {
+    [ExcludeFromCodeCoverage]
     public class ValidationException : CoreException
     {
         public string Code { get; private set; }

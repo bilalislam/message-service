@@ -1,9 +1,11 @@
-﻿using MediatR;
+﻿using System.Diagnostics.CodeAnalysis;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MessageService.Api.Controllers
 {
+    [ExcludeFromCodeCoverage]
     [Authorize]
     [ApiController]
     [Route("api/messages")]

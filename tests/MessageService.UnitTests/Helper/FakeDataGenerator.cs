@@ -8,6 +8,22 @@ public class FakeDataGenerator
 {
     private static Faker _faker = new Faker();
 
+    public static GetHistoriesCommand CreateHistoriesCommand()
+    {
+        return new GetHistoriesCommand()
+        {
+            CurrentUser = _faker.Random.String(),
+            ReceiverUser = _faker.Random.String()
+        };
+    }
+
+    public static GetMessageUsersCommand CreateMessageUsersCommand()
+    {
+        return new GetMessageUsersCommand()
+        {
+            CurrentUser = _faker.Random.String()
+        };
+    }
 
     public static GetActivitiesCommand CreateActivitiesCommand()
     {
@@ -16,7 +32,7 @@ public class FakeDataGenerator
             Email = _faker.Random.String()
         };
     }
-    
+
     public static RefreshTokenCommand CreateRefreshTokenCommand()
     {
         return new RefreshTokenCommand()

@@ -1,5 +1,8 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace MessageService.Api
 {
+    [ExcludeFromCodeCoverage]
     public class CoreException : Exception
     {
         public CoreException(string message)

@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Text;
@@ -6,6 +7,7 @@ using Newtonsoft.Json;
 
 namespace MessageService.Api
 {
+    [ExcludeFromCodeCoverage]
     public class JwtMiddleware
     {
         private readonly RequestDelegate _next;

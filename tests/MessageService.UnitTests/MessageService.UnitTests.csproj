@@ -19,10 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Unit\Application\Message" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\src\MessageService.Api\MessageService.Api.csproj" />
   </ItemGroup>
 

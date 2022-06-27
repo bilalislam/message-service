@@ -1,7 +1,9 @@
+using System.Diagnostics.CodeAnalysis;
 using MongoDB.Driver;
 
 namespace MessageService.Api
 {
+    [ExcludeFromCodeCoverage]
     public class BlockedUserRepository : IBlockedUserRepository
     {
         private readonly IMongoDBContext _context;

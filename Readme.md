@@ -6,35 +6,50 @@
 
 ---
 
+## How to use:
+- You will need .NET SDK 6.0
+- The latest SDK and tools can be downloaded from https://dot.net/core.
 
-## TODO 
+Also you can run the  in Visual Studio Code (Windows, Linux or MacOS).
+
+To know more about how to setup your enviroment visit the [Microsoft .NET Download Guide](https://www.microsoft.com/net/download)
+
+## How to setup via local:
+
+```sh
+$ docker run -d -p 15672:15672 -p 5672:5672 rabbitmq:3.8.14-management
+$ docker run -d -p 27017:27017 --name test-mongo mongo:latest
+$ dotnet run
+$ open http://localhost:5000/swagger
+```
+
+
+## How to setup via docker compose:
+
+```sh
+$ docker-compose build
+$ docker-compose up
+$ open http://localhost:5000/swagger
+```
+For stop all containers
+```sh
+$ docker-compose down
+```
+
+## Technologies implemented:
 
 - [x] dockerize
 - [x] docker compose
 - [x] structed logging + elasticsearch
 - [x] global exception handling
-- [x] command validation
 - [x] usecases
-- [ ] entity id generator
-- [ ] unit tests
-- [ ] functional tests
+- [x] unit tests
 - [x] rest
 - [x] mediatR
 - [x] clean architecture
 - [x] mongo
-- [ ] mongo add constraint for blockeduser
 - [x] masstransit
-- [ ] masstransit unit tests
 - [x] rabbitmq
-- [ ] tech stack olarak awesome readme koy (masstransit,rabbitmq,mongo,dotnet6.0)
+- [x] dotnet6.0
 
 
-## Get test coverage result
-
-```sh
- dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=lcov /p:CoverletOutput=./lcov tests/MessageService.UnitTests/MessageService.UnitTests.csproj
-```
-
-```sh
- dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=lcov /p:CoverletOutput=./lcov tests/MessageService.FunctionalTests/MessageService.FunctionalTests.csproj
-```

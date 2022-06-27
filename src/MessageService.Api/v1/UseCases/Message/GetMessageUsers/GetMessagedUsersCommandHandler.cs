@@ -2,11 +2,11 @@ using MediatR;
 
 namespace MessageService.Api;
 
-public class GetMessageUsersCommandHandler : IRequestHandler<GetMessageUsersCommand, GetMessageUsersCommandResult>
+public class GetMessagedUsersCommandHandler : IRequestHandler<GetMessageUsersCommand, GetMessageUsersCommandResult>
 {
     private readonly IMessageRepository _messageRepository;
 
-    public GetMessageUsersCommandHandler(IMessageRepository messageRepository)
+    public GetMessagedUsersCommandHandler(IMessageRepository messageRepository)
     {
         _messageRepository = messageRepository;
     }
@@ -14,7 +14,7 @@ public class GetMessageUsersCommandHandler : IRequestHandler<GetMessageUsersComm
     public async Task<GetMessageUsersCommandResult> Handle(GetMessageUsersCommand request,
         CancellationToken cancellationToken)
     {
-        var getMessageUsers = await _messageRepository.GetUsersAsync(request.CurrentUser, cancellationToken);
+        var getMessageUsers = await _messageRepository.GetMessagedUsersAsync(request.CurrentUser, cancellationToken);
         return new GetMessageUsersCommandResult()
         {
             Success = true,

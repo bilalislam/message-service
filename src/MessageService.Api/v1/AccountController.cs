@@ -1,10 +1,12 @@
-﻿using MediatR;
+﻿using System.Diagnostics.CodeAnalysis;
+using MediatR;
 using MessageService.Api.Controllers.UseCases.Account.GetUsers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MessageService.Api.Controllers
 {
+    [ExcludeFromCodeCoverage]
     [ApiController]
     [Route("api/account")]
     public class AccountController : ControllerBase
