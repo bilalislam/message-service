@@ -10,10 +10,22 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
-    <PackageReference Include="MSTest.TestAdapter" Version="2.2.8" />
-    <PackageReference Include="MSTest.TestFramework" Version="2.2.8" />
     <PackageReference Include="coverlet.collector" Version="3.1.2" />
     <PackageReference Include="coverlet.msbuild" Version="2.7.0" />
+    <PackageReference Include="Bogus" Version="28.4.1" />
+    <PackageReference Include="nunit" Version="3.12.0" />
+    <PackageReference Include="FluentAssertions" Version="5.9.0" />
+    <PackageReference Include="Moq" Version="4.13.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Unit\Application\Account" />
+    <Folder Include="Unit\Application\Message" />
+    <Folder Include="Unit\Domain\Handlers" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\MessageService.Api\MessageService.Api.csproj" />
   </ItemGroup>
 
 </Project>

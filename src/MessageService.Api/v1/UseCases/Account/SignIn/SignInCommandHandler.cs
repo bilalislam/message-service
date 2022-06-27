@@ -1,4 +1,3 @@
-using System.Globalization;
 using MassTransit;
 using MediatR;
 using MongoDB.Bson;
@@ -30,7 +29,7 @@ public class SignInCommandHandler : IRequestHandler<SignInCommand, SignInCommand
                 user.CreateToken(_tokenProxy);
                 await _repository.UpdateAsync(user, cancellationToken);
                 await CreateActivityLog(user.Email, "login is success");
-                
+
                 return new SignInCommandResult()
                 {
                     Token = user.Token,
@@ -64,12 +63,12 @@ public class SignInCommandHandler : IRequestHandler<SignInCommand, SignInCommand
     private async Task CreateActivityLog(string email, string message)
     {
         var endpoint = await _sendEndpointProvider.GetSendEndpoint(new Uri("queue:activity"));
-        await endpoint.Send<Activity>(new
+        await endpoint.Send(Activity.Load(new ActivityCommand()
         {
-            Id = ObjectId.GenerateNewId(),
+            Id = ObjectId.GenerateNewId().ToString(),
             Email = email,
             Event = message,
             EventOn = DateTime.Now
-        });
+        }));
     }
 }

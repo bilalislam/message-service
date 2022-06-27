@@ -14,4 +14,7 @@ public static class DomainErrorCodes
     public const string EDService1007 = "From and to could not be same";
     public const string EDService1008 = "User does not exists";
     public const string EDService1009 = "Message could not be empty";
+    public const string EDService1010 = "Activity id could not be empty";
+    public const string EDService1011 = "Activity email could not be empty";
+    public const string EDService1012 = "Activity event could not be empty";
 }
