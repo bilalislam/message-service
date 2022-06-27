@@ -29,7 +29,7 @@ $ open http://localhost:5000/swagger
 ```sh
 $ docker-compose build
 $ docker-compose up
-$ open http://localhost:5000/swagger
+$ open http://localhost:8002/swagger
 ```
 For stop all containers
 ```sh

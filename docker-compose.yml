@@ -3,22 +3,25 @@ version: "3.3"
 networks:
   messagingservice:
 
-messageservice:
-  build:
-    context: .
-    dockerfile: ./tools/docker/Dockerfile
-  networks:
-    - messagingservice
-  ports:
-    - "8002:80"
-  environment:
-    - DOTNET_ENVIRONMENT=Prod
-
 services:
+  messageservice:
+    build:
+      context: .
+      dockerfile: ./tools/docker/Dockerfile
+    networks:
+      - messagingservice
+    ports:
+      - "8002:80"
+    environment:
+      - DOTNET_ENVIRONMENT=docker
+    depends_on:
+      - rabbitmq
+      - mongo
+      
   rabbitmq:
     image: masstransit/rabbitmq:latest
     networks:
-      - netmon
+      - messagingservice
     ports:
       - "5672:5672"
       - "15672:15672"
