@@ -21,7 +21,6 @@
   <ItemGroup>
     <Folder Include="Unit\Application\Account" />
     <Folder Include="Unit\Application\Message" />
-    <Folder Include="Unit\Domain\Handlers" />
   </ItemGroup>
 
   <ItemGroup>

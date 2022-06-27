@@ -14,7 +14,7 @@ namespace MessageService.Api
 
         public string Event { get; private set; }
         public DateTime EventOn { get; private set; }
-
+        
         /// <summary>
         /// impedance mismatch !
         /// </summary>

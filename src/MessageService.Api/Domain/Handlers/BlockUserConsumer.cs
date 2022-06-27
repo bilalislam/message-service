@@ -15,15 +15,17 @@ namespace MessageService.Api
 
         public async Task Consume(ConsumeContext<BlockUser> context)
         {
-            var blockedUser = await _blockedUserRepository.GetAsync(context.Message.From, context.Message.To);
+            var blockedUser =
+                await _blockedUserRepository.GetAsync(context.Message.From, context.Message.To, CancellationToken.None);
             if (blockedUser != null)
             {
-                await _blockedUserRepository.RemoveAsync(context.Message.From, context.Message.To);
+                await _blockedUserRepository.RemoveAsync(context.Message.From, context.Message.To,
+                    CancellationToken.None);
                 _logger.LogInformation($"{context.Message.From} unblocked to {context.Message.To}");
             }
             else
             {
-                await _blockedUserRepository.AddAsync(context.Message);
+                await _blockedUserRepository.AddAsync(context.Message, CancellationToken.None);
                 _logger.LogInformation($"{context.Message.From} blocked to {context.Message.To}");
             }
         }

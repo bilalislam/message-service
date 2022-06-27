@@ -7,6 +7,7 @@ namespace MessageService.Api
         private readonly ILogger<ActivityConsumer> _logger;
         private readonly IActivityRepository _activityRepository;
 
+
         public ActivityConsumer(ILogger<ActivityConsumer> logger, IActivityRepository activityRepository)
         {
             _logger = logger;
@@ -16,7 +17,8 @@ namespace MessageService.Api
         public async Task Consume(ConsumeContext<Activity> context)
         {
             await _activityRepository.AddAsync(context.Message, CancellationToken.None);
-            _logger.LogInformation($"Activity log received from : {context.Message.Email} to : {context.Message.Event}");
+            _logger.LogInformation(
+                $"Activity log received from : {context.Message.Email} to : {context.Message.Event}");
         }
     }
 }

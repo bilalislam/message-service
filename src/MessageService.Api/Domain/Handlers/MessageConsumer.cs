@@ -24,7 +24,8 @@ namespace MessageService.Api
         /// <param name="context"></param>
         public async Task Consume(ConsumeContext<Message> context)
         {
-            var getBlockedUser = await _blockedUserRepository.GetAsync(context.Message.To, context.Message.From);
+            var getBlockedUser =
+                await _blockedUserRepository.GetAsync(context.Message.To, context.Message.From, CancellationToken.None);
             if (getBlockedUser == null)
             {
                 await _messageRepository.AddAsync(context.Message, CancellationToken.None);

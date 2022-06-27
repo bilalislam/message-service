@@ -1,3 +1,6 @@
+using System.Diagnostics.CodeAnalysis;
+
+[ExcludeFromCodeCoverage]
 public class Mongosettings
 {
     public string Connection { get; set; }
