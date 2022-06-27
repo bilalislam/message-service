@@ -5,9 +5,7 @@ networks:
 
 services:
   messageservice:
-    build:
-      context: .
-      dockerfile: ./tools/docker/Dockerfile
+    image: ninjafx/messageservice:latest
     networks:
       - messagingservice
     ports:
@@ -19,21 +17,13 @@ services:
       - mongo
       
   rabbitmq:
-    image: masstransit/rabbitmq:latest
+    image: rabbitmq:3.8.14-management
     networks:
       - messagingservice
     ports:
       - "5672:5672"
       - "15672:15672"
       - "15692:15692"
-    healthcheck:
-      timeout: 5s
-      interval: 5s
-      retries: 10
-      test:
-        - "CMD"
-        - "rabbitmqctl"
-        - "status"
 
   mongo:
     image: "mongo"
