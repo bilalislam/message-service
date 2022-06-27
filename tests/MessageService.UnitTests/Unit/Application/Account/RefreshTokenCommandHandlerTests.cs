@@ -1,7 +1,6 @@
 using FluentAssertions;
 using MessageService.Api;
 using MessageService.UnitTests.Helper;
-using MongoDB.Driver.Linq;
 using Moq;
 using NUnit.Framework;
 
