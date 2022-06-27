@@ -8,6 +8,15 @@ public class FakeDataGenerator
 {
     private static Faker _faker = new Faker();
 
+    public static SignInCommand CreateSignInCommand()
+    {
+        return new SignInCommand()
+        {
+            Email = _faker.Random.String(),
+            Password = _faker.Random.String()
+        };
+    }
+
     public static SignUpCommand CreateSignUpCommand()
     {
         return new SignUpCommand()
