@@ -8,6 +8,16 @@ public class FakeDataGenerator
 {
     private static Faker _faker = new Faker();
 
+
+    public static RefreshTokenCommand CreateRefreshTokenCommand()
+    {
+        return new RefreshTokenCommand()
+        {
+            Email = _faker.Random.String(),
+            RefreshToken = _faker.Random.String()
+        };
+    }
+
     public static SignInCommand CreateSignInCommand()
     {
         return new SignInCommand()

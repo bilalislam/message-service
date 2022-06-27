@@ -39,4 +39,22 @@ public class SignUpCommandHandlerTests
         result.ValidateState.Should().Be(ValidationState.AlreadyExist);
         result.Success.Should().Be(false);
     }
+    
+    [Test]
+    public async Task Handle_Should_Return_Success_WhenValid()
+    {
+        //Arrange
+        var request = FakeDataGenerator.CreateSignUpCommand();
+        _mockUserRepository.Setup(x => x.GetByEmailAsync(request.Email, CancellationToken.None))
+            .ReturnsAsync((User)null!);
+        var handler = new SignUpCommandHandler(_mockUserRepository.Object);
+
+        //Act
+        var result = await handler.Handle(request, CancellationToken.None);
+
+        //Assert
+        result.ValidateState.Should().Be(ValidationState.Valid);
+        result.Success.Should().Be(true);
+        
+    }
 }
